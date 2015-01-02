@@ -16,7 +16,7 @@ public class UsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
-        out.println("Hello world Luka GET!");
+        out.println("Pozdravljen svet Luka GET!");
         out.flush();
         out.close();
     }

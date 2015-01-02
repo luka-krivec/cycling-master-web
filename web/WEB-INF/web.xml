@@ -11,6 +11,6 @@
     
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
+        <url-pattern>/users/*</url-pattern>
     </servlet-mapping>
 </web-app>

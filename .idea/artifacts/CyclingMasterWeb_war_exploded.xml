@@ -7,6 +7,7 @@
         <element id="directory" name="classes">
           <element id="module-output" name="CyclingMasterWeb" />
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/web.xml" />
       </element>
     </root>
   </artifact>

@@ -28,6 +28,11 @@ public class UsersServlet extends HttpServlet {
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
         out.println(userSignUp);
+
+        if(userSignUp != true) {
+            out.println(DatabaseUtils.LAST_ERROR);
+        }
+
         out.flush();
         out.close();
     }

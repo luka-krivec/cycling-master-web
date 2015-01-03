@@ -1,10 +1,7 @@
 package utils;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseUtils {
 
@@ -16,24 +13,32 @@ public class DatabaseUtils {
     static final String USER = "admin7ijNKTX";
     static final String PASS = "Rx1er3VQKjK4";
 
+    public static String LAST_ERROR = "";
+
     public static boolean insertUser(String username, String email, String pass, String authType) {
         boolean result = false;
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
+
+        String sql = "INSERT INTO Users (email, password, username, auth_type) " +
+                     "VALUES (?, ?, ?, ?)";
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setString(2, PasswordHash.createHash(pass));
+            stmt.setString(3, username);
+            stmt.setString(4, authType);
 
-            String sql = "INSERT INTO Users (email, password, username, auth_type) " +
-                         "VALUES (email, PasswordHash.createHash(password), auth_type)";
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate();
 
             result = true;
 
         } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
             se.printStackTrace();
         } catch (Exception e) {
             //Handle errors for Class.forName
@@ -49,6 +54,7 @@ public class DatabaseUtils {
                 if (conn != null)
                     conn.close();
             } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
                 se.printStackTrace();
             }
         }

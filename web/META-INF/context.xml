@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/">
+
+    <!-- Local settings
+    <Resource name="jdbc/OpenShiftMySQL" auth="Container" type="javax.sql.DataSource"
+              maxActive="50" maxIdle="30" maxWait="10000"
+              username="admin7ijNKTX" password="Rx1er3VQKjK4"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3307/cyclingmaster"/> -->
+
+    <!-- Remote settings -->
+    <Resource name="jdbc/OpenShiftMySQL" auth="Container" type="javax.sql.DataSource"
+              maxActive="50" maxIdle="30" maxWait="10000"
+              username="admin7ijNKTX" password="Rx1er3VQKjK4"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://127.2.246.2:3306/cyclingmaster"/>
+
 </Context>

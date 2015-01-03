@@ -24,7 +24,7 @@ public class DatabaseUtils {
                      "VALUES (?, ?, ?, ?)";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(sql);

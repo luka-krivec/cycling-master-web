@@ -28,7 +28,7 @@ public class DatabaseUtils {
             stmt = conn.createStatement();
 
             String sql = "INSERT INTO Users (email, password, username, auth_type) " +
-                    "VALUES (email, PasswordHash.createHash(password), auth_type)";
+                         "VALUES (email, PasswordHash.createHash(password), auth_type)";
             stmt.executeUpdate(sql);
 
             result = true;

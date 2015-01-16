@@ -7,20 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b651ec3-e959-4738-bd11-e732c4dcdc24" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/utils/TrackerDbHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/TrackerServlet.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/utils/Utils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/script.sql" />
-      <change type="DELETED" beforePath="C:\Programming\IntelliJ\CyclingMasterWeb\out\artifacts\CyclingMasterWeb_war_exploded\WEB-INF\classes\utils\DatabaseUtils.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Programming\IntelliJ\CyclingMasterWeb\skripta.sql" afterPath="" />
-      <change type="DELETED" beforePath="C:\Programming\IntelliJ\CyclingMasterWeb\target\classes\utils\DatabaseUtils.class" afterPath="" />
-      <change type="MOVED" beforePath="C:\Programming\IntelliJ\CyclingMasterWeb\src\main\java\utils\DatabaseUtils.java" afterPath="$PROJECT_DIR$/src/main/java/utils/UsersDbHelper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/utils/RoutesDbHelper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/RoutesServlet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/soapUI-Localhost" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/soapUi-Production" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war/CyclingMasterWeb_war.war" afterPath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war/CyclingMasterWeb_war.war" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/WEB-INF/classes/UsersServlet.class" afterPath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/WEB-INF/classes/UsersServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/UsersServlet.class" afterPath="$PROJECT_DIR$/target/classes/UsersServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/CyclingMasterWeb_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/CyclingMasterWeb_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/utils/ResultObject.java" afterPath="$PROJECT_DIR$/src/main/java/utils/ResultObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/UsersServlet.java" afterPath="$PROJECT_DIR$/src/main/java/UsersServlet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/TrackerServlet.java" afterPath="$PROJECT_DIR$/src/main/java/TrackerServlet.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/META-INF/context.xml" afterPath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/META-INF/context.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/META-INF/context.xml" afterPath="$PROJECT_DIR$/web/META-INF/context.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/out/artifacts/CyclingMasterWeb_war_exploded/WEB-INF/web.xml" />
@@ -88,12 +80,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TrackerServlet.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TrackerServlet.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/TrackerServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.441331" vertical-offset="857" max-vertical-offset="1428">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="959" max-vertical-offset="1530">
+              <caret line="60" column="35" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RoutesServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/RoutesServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1323" max-vertical-offset="2040">
+              <caret line="102" column="60" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="60" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,11 +114,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="RoutesDbHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/RoutesDbHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1989">
+              <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <marker date="1421431553338" expanded="true" signature="1305:1433" placeholder="INSERT INTO ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="TrackerDbHelper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/utils/TrackerDbHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="201" max-vertical-offset="1921">
-              <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1323" max-vertical-offset="1921">
+              <caret line="105" column="5" selection-start-line="41" selection-start-column="4" selection-end-line="105" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <marker date="1421423715467" expanded="true" signature="1202:1294" placeholder="INSERT INTO ..." />
@@ -137,11 +156,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="context.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="context.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/META-INF/context.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.29109588" vertical-offset="0" max-vertical-offset="584">
+              <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -163,14 +182,16 @@
         <option value="$PROJECT_DIR$/src/main/java/utils/PasswordHash.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/utils/DatabaseUtils.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/src/main/java/UsersServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/ResultObject.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/UsersDbHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/Utils.java" />
-        <option value="$PROJECT_DIR$/web/META-INF/context.xml" />
         <option value="$PROJECT_DIR$/src/main/java/utils/TrackerDbHelper.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/RoutesServlet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/RoutesDbHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/TrackerServlet.java" />
+        <option value="$PROJECT_DIR$/web/META-INF/context.xml" />
       </list>
     </option>
   </component>
@@ -703,7 +724,7 @@
       <workItem from="1420318990988" duration="618000" />
       <workItem from="1420375622458" duration="626000" />
       <workItem from="1420977470614" duration="126000" />
-      <workItem from="1421416948326" duration="4580000" />
+      <workItem from="1421416948326" duration="9165000" />
     </task>
     <task id="LOCAL-00001" summary="First commit.">
       <created>1420195091151</created>
@@ -783,11 +804,17 @@
       <option name="project" value="LOCAL" />
       <updated>1420317162031</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added Tracker Servlet.">
+      <created>1421423981945</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1421423981945</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40591000" />
+    <option name="totallyTimeSpent" value="45176000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1216" extended-state="6" />
@@ -846,11 +873,12 @@
     <MESSAGE value="Changed configuration to build war file proper." />
     <MESSAGE value="Add database management for user login." />
     <MESSAGE value="Improved Users Servlet." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved Users Servlet." />
+    <MESSAGE value="Added Tracker Servlet." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Tracker Servlet." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="26" />
+      <option name="time" value="27" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -874,14 +902,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="323">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#262#263#0" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#372#373#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#262#263#0" expanded="false" />
+            <element signature="e#291#292#0" expanded="false" />
+            <element signature="e#336#337#0" expanded="false" />
+            <element signature="e#372#373#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="false" />
+            <element signature="e#432#433#0" expanded="false" />
+            <element signature="e#474#475#0" expanded="false" />
+            <element signature="e#508#509#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -909,14 +937,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="323">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#262#263#0" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#372#373#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#262#263#0" expanded="false" />
+            <element signature="e#291#292#0" expanded="false" />
+            <element signature="e#336#337#0" expanded="false" />
+            <element signature="e#372#373#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="false" />
+            <element signature="e#432#433#0" expanded="false" />
+            <element signature="e#474#475#0" expanded="false" />
+            <element signature="e#508#509#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -944,14 +972,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="323">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#262#263#0" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#372#373#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#262#263#0" expanded="false" />
+            <element signature="e#291#292#0" expanded="false" />
+            <element signature="e#336#337#0" expanded="false" />
+            <element signature="e#372#373#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="false" />
+            <element signature="e#432#433#0" expanded="false" />
+            <element signature="e#474#475#0" expanded="false" />
+            <element signature="e#508#509#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -979,14 +1007,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="323">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#262#263#0" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#372#373#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#262#263#0" expanded="false" />
+            <element signature="e#291#292#0" expanded="false" />
+            <element signature="e#336#337#0" expanded="false" />
+            <element signature="e#372#373#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="false" />
+            <element signature="e#432#433#0" expanded="false" />
+            <element signature="e#474#475#0" expanded="false" />
+            <element signature="e#508#509#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1205,27 +1233,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18906395" vertical-offset="0" max-vertical-offset="1079">
-          <caret line="12" column="38" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/utils/ResultObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15755329" vertical-offset="0" max-vertical-offset="1079">
           <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
           <folding>
-            <element signature="e#262#263#0" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#372#373#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#262#263#0" expanded="false" />
+            <element signature="e#291#292#0" expanded="false" />
+            <element signature="e#336#337#0" expanded="false" />
+            <element signature="e#372#373#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="false" />
+            <element signature="e#432#433#0" expanded="false" />
+            <element signature="e#474#475#0" expanded="false" />
+            <element signature="e#508#509#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1262,18 +1282,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/META-INF/context.xml">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7431507" vertical-offset="93" max-vertical-offset="867">
+          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/utils/TrackerDbHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="201" max-vertical-offset="1921">
-          <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1323" max-vertical-offset="1921">
+          <caret line="105" column="5" selection-start-line="41" selection-start-column="4" selection-end-line="105" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <marker date="1421423715467" expanded="true" signature="1202:1294" placeholder="INSERT INTO ..." />
@@ -1281,10 +1301,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/RoutesDbHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1989">
+          <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1421431553338" expanded="true" signature="1305:1433" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/RoutesServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1323" max-vertical-offset="2040">
+          <caret line="102" column="60" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TrackerServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.441331" vertical-offset="857" max-vertical-offset="1428">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="959" max-vertical-offset="1530">
+          <caret line="60" column="35" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/META-INF/context.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29109588" vertical-offset="0" max-vertical-offset="584">
+          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
           <folding />
         </state>
       </provider>

@@ -26,6 +26,17 @@
     </servlet-mapping>
 
 
+    <servlet>
+        <servlet-name>RoutesServlet</servlet-name>
+        <servlet-class>RoutesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RoutesServlet</servlet-name>
+        <url-pattern>/routes/*</url-pattern>
+    </servlet-mapping>
+
+
     <resource-ref>
         <description>MySQL Datasource</description>
         <res-ref-name>jdbc/OpenShiftMySQL</res-ref-name>

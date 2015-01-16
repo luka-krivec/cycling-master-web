@@ -31,29 +31,34 @@ public class TrackerServlet extends HttpServlet {
         float altitude = 0;
 
         boolean parametersSuitable = true;
+        String failedData = "";
 
         if(paramIdRoute != null && Utils.isInteger(paramIdRoute)) {
             idRoute = Integer.parseInt(paramIdRoute);
         } else {
             parametersSuitable = false;
+            failedData += "idRoute (input:" + paramIdRoute + ") ";
         }
 
         if(paramLat != null && Utils.isFloat(paramLat)) {
             lat = Float.parseFloat(paramLat);
         } else {
             parametersSuitable = false;
+            failedData += "lat (input:" + paramLat + ") ";
         }
 
         if(paramLng != null && Utils.isFloat(paramLng)) {
             lng = Float.parseFloat(paramLng);
         } else {
             parametersSuitable = false;
+            failedData += "lng (input:" + paramLng + ") ";
         }
 
         if(paramAltitude != null && Utils.isFloat(paramAltitude)) {
             altitude = Float.parseFloat(paramAltitude);
         } else {
             parametersSuitable = false;
+            failedData += "altitude (input:" + paramAltitude + ") ";
         }
 
 
@@ -65,6 +70,7 @@ public class TrackerServlet extends HttpServlet {
             responseJSON.put("error", true);
             responseJSON.put("errorCode", 0);
             responseJSON.put("errorDescription", "Not suitable data");
+            responseJSON.put("errorDataFields", failedData);
             out.println(responseJSON);
         }
 

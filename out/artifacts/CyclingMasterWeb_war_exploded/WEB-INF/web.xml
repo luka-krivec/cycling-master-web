@@ -14,6 +14,18 @@
         <url-pattern>/users/*</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>TrackerServlet</servlet-name>
+        <servlet-class>TrackerServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TrackerServlet</servlet-name>
+        <url-pattern>/tracker/*</url-pattern>
+    </servlet-mapping>
+
+
     <resource-ref>
         <description>MySQL Datasource</description>
         <res-ref-name>jdbc/OpenShiftMySQL</res-ref-name>

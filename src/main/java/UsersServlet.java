@@ -1,5 +1,5 @@
 import org.json.simple.JSONObject;
-import utils.DatabaseUtils;
+import utils.UsersDbHelper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ public class UsersServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json; charset=UTF-8");
 
-        DatabaseUtils dbUtils = new DatabaseUtils();
+        UsersDbHelper dbUtils = new UsersDbHelper();
 
         String paramUserSignUp = request.getParameter("userSignUp");
         String paramUserLogin = request.getParameter("userLogin");

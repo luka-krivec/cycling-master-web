@@ -13,6 +13,6 @@
               maxActive="50" maxIdle="30" maxWait="10000"
               username="admin7ijNKTX" password="Rx1er3VQKjK4"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://127.2.246.2:3306/cyclingmaster"/> -->
+              url="jdbc:mysql://127.2.246.2:3306/cyclingmaster"/>-->
 
 </Context>

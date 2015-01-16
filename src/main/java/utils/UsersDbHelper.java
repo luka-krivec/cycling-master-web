@@ -1,6 +1,5 @@
 package utils;
 
-
 import org.json.simple.JSONObject;
 
 import javax.naming.Context;
@@ -12,7 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseUtils {
+
+public class UsersDbHelper {
 
     public static String LAST_ERROR = "";
 
@@ -49,8 +49,8 @@ public class DatabaseUtils {
         ds = getDataSource();
 
         String sql = "SELECT id_user " +
-                     "FROM Users " +
-                     "WHERE username = ?";
+                "FROM Users " +
+                "WHERE username = ?";
 
         try {
             conn = ds.getConnection();
@@ -101,8 +101,8 @@ public class DatabaseUtils {
         ds = getDataSource();
 
         String sql = "SELECT id_user " +
-                     "FROM Users " +
-                     "WHERE email = ?";
+                "FROM Users " +
+                "WHERE email = ?";
 
         try {
             conn = ds.getConnection();
@@ -148,9 +148,9 @@ public class DatabaseUtils {
 
         // Check username
         ResultObject resUserNameExists = userNameExists(username);
-        if(resUserNameExists.error.length() == 0) {
+        if(resUserNameExists.getError().length() == 0) {
             // Username already taken
-            if(resUserNameExists.result == true) {
+            if(resUserNameExists.isResultSuccessful()) {
                 response.put("error", true);
                 response.put("errorCode", 1);
                 response.put("errorDescription", "Username is already taken");
@@ -160,16 +160,16 @@ public class DatabaseUtils {
             // Error recieving usernames
             response.put("error", true);
             response.put("errorCode", 3);
-            response.put("errorDescription", resUserNameExists.error);
+            response.put("errorDescription", resUserNameExists.getError());
             return response;
         }
 
 
         // Check email
         ResultObject resEmailExists = userExists(email);
-        if(resEmailExists.error.length() == 0) {
+        if(resEmailExists.getError().length() == 0) {
             // Email already registered
-            if(resEmailExists.result == true) {
+            if(resEmailExists.isResultSuccessful()) {
                 response.put("error", true);
                 response.put("errorCode", 2);
                 response.put("errorDescription", "Email already registered.");
@@ -179,7 +179,7 @@ public class DatabaseUtils {
             // Error recieving emails
             response.put("error", true);
             response.put("errorCode", 3);
-            response.put("errorDescription", resEmailExists.error);
+            response.put("errorDescription", resEmailExists.getError());
             return response;
         }
 
@@ -189,7 +189,7 @@ public class DatabaseUtils {
         ds = getDataSource();
 
         String sql = "INSERT INTO Users (email, password, username, auth_type) " +
-                     "VALUES (?,?,?,?)";
+                "VALUES (?,?,?,?)";
 
         try {
             conn = ds.getConnection();
@@ -251,9 +251,9 @@ public class DatabaseUtils {
 
         // Check email
         ResultObject resEmailExists = userExists(email);
-        if(resEmailExists.error.length() == 0) {
+        if(resEmailExists.getError().length() == 0) {
             // Email already registered
-            if(resEmailExists.result == false) {
+            if(resEmailExists.isResultSuccessful() == false) {
                 response.put("error", true);
                 response.put("errorCode", 1);
                 response.put("errorDescription", "User with this email not exists");
@@ -263,7 +263,7 @@ public class DatabaseUtils {
             // Error recieving emails
             response.put("error", true);
             response.put("errorCode", 3);
-            response.put("errorDescription", resEmailExists.error);
+            response.put("errorDescription", resEmailExists.getError());
             return response;
         }
 
@@ -275,8 +275,8 @@ public class DatabaseUtils {
         String passwordFromDatabase = "";
 
         String sql = "SELECT password " +
-                     "FROM Users " +
-                     "WHERE email = ?";
+                "FROM Users " +
+                "WHERE email = ?";
 
         try {
             conn = ds.getConnection();

@@ -8,6 +8,10 @@
           <element id="module-output" name="CyclingMasterWeb" />
         </element>
         <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/web.xml" />
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.googlecode.json-simple:json-simple:1.1" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.0.8" />
+        </element>
       </element>
     </root>
   </artifact>

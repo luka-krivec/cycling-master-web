@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 
 public class TrackerDbHelper {
@@ -39,7 +40,9 @@ public class TrackerDbHelper {
     }
 
 
-    public JSONObject insertPoint(int id_route, float lat, float lng, float altitude, float accuracy, float speed, float bearing) {
+    public JSONObject insertPoint(int id_route, float lat, float lng, boolean hasAltitude, float altitude,
+                                  boolean hasAccuracy, float accuracy, boolean hasSpeed,  float speed,
+                                  boolean hasBearing, float bearing) {
         JSONObject response = new JSONObject();
 
         Connection conn = null;
@@ -56,10 +59,30 @@ public class TrackerDbHelper {
             stmt.setInt(1, id_route);
             stmt.setFloat(2, lat);
             stmt.setFloat(3, lng);
-            stmt.setFloat(4, altitude);
-            stmt.setFloat(5, accuracy);
-            stmt.setFloat(6, speed);
-            stmt.setFloat(7, bearing);
+
+            if(hasAltitude) {
+                stmt.setFloat(4, altitude);
+            } else {
+                stmt.setNull(4, Types.FLOAT);
+            }
+
+            if(hasAccuracy) {
+                stmt.setFloat(5, accuracy);
+            } else {
+                stmt.setNull(5, Types.FLOAT);
+            }
+
+            if(hasSpeed) {
+                stmt.setFloat(6, speed);
+            } else {
+                stmt.setNull(6, Types.FLOAT);
+            }
+
+            if(hasBearing) {
+                stmt.setFloat(7, bearing);
+            } else {
+                stmt.setNull(7, Types.FLOAT);
+            }
 
             int res = stmt.executeUpdate();
 

@@ -37,6 +37,10 @@ public class TrackerServlet extends HttpServlet {
         float bearing = 0;
 
         boolean parametersSuitable = true;
+        boolean hasAltitude = false;
+        boolean hasSpeed = false;
+        boolean hasBearing = false;
+        boolean hasAccuracy = false;
         String failedData = "";
 
         // Required parameters
@@ -64,23 +68,28 @@ public class TrackerServlet extends HttpServlet {
         // Optional parameters
         if(paramAltitude != null && Utils.isFloat(paramAltitude)) {
             altitude = Float.parseFloat(paramAltitude);
+            hasAltitude = altitude > 0;
         }
 
         if(paramAccuracy != null && Utils.isFloat(paramAccuracy)) {
             accuracy = Float.parseFloat(paramAccuracy);
+            hasAccuracy = accuracy > 0;
         }
 
         if(paramSpeed != null && Utils.isFloat(paramSpeed)) {
             speed = Float.parseFloat(paramSpeed);
+            hasSpeed = speed > 0;
         }
 
         if(paramBearing != null && Utils.isFloat(paramBearing)) {
             bearing = Float.parseFloat(paramBearing);
+            hasBearing = (bearing >= 0) && (bearing <= 360);
         }
 
 
         if(parametersSuitable) {
-            JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, altitude, accuracy, speed, bearing);
+            JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, hasAltitude, altitude,
+                    hasAccuracy, accuracy, hasSpeed, speed, hasBearing,  bearing);
             out.println(responseObject);
         } else {
             JSONObject responseJSON = new JSONObject();

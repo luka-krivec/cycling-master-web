@@ -48,7 +48,7 @@ public class UsersDbHelper {
 
         ds = getDataSource();
 
-        String sql = "SELECT id_user " +
+        String sql = "SELECT idUser " +
                 "FROM Users " +
                 "WHERE username = ?";
 
@@ -100,7 +100,7 @@ public class UsersDbHelper {
 
         ds = getDataSource();
 
-        String sql = "SELECT id_user " +
+        String sql = "SELECT idUser " +
                 "FROM Users " +
                 "WHERE email = ?";
 
@@ -188,8 +188,8 @@ public class UsersDbHelper {
 
         ds = getDataSource();
 
-        String sql = "INSERT INTO Users (email, password, username, auth_type) " +
-                "VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Users (email, password, userName, authType) " +
+                     "VALUES (?,?,?,?)";
 
         try {
             conn = ds.getConnection();

@@ -49,7 +49,7 @@ public class RoutesDbHelper {
 
         ds = getDataSource();
 
-        String sql = "INSERT INTO Routes (id_user, name, distance, average_speed, start_time, end_time) " +
+        String sql = "INSERT INTO Routes (idUser, routeName, distance, averageSpeed, startTime, endTime) " +
                      "VALUES (?,?,?,?,?,?)";
 
         try {

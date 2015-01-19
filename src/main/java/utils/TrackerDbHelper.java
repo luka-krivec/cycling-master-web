@@ -47,7 +47,7 @@ public class TrackerDbHelper {
 
         ds = getDataSource();
 
-        String sql = "INSERT INTO Points (id_route, lat, lng, altitude) " +
+        String sql = "INSERT INTO Points (idRoute, lat, lng, altitude) " +
                      "VALUES (?,?,?,?)";
 
         try {

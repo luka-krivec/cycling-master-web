@@ -24,11 +24,13 @@ public class TrackerServlet extends HttpServlet {
         String paramLat = request.getParameter("lat");
         String paramLng = request.getParameter("lng");
         String paramAltitude = request.getParameter("altitude");
+        String paramAccuracy = request.getParameter("accuracy");
 
         int idRoute = 0;
         float lat = 0;
         float lng = 0;
         float altitude = 0;
+        float accuracy = 0;
 
         boolean parametersSuitable = true;
         String failedData = "";
@@ -61,9 +63,16 @@ public class TrackerServlet extends HttpServlet {
             failedData += "altitude (input:" + paramAltitude + ") ";
         }
 
+        if(paramAccuracy != null && Utils.isFloat(paramAccuracy)) {
+            accuracy = Float.parseFloat(paramAccuracy);
+        } else {
+            parametersSuitable = false;
+            failedData += "accuracy (input:" + paramAccuracy + ") ";
+        }
+
 
         if(parametersSuitable) {
-            JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, altitude);
+            JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, altitude, accuracy);
             out.println(responseObject);
         } else {
             JSONObject responseJSON = new JSONObject();

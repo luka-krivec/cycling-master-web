@@ -39,7 +39,7 @@ public class TrackerDbHelper {
     }
 
 
-    public JSONObject insertPoint(int id_route, float lat, float lng, float altitude) {
+    public JSONObject insertPoint(int id_route, float lat, float lng, float altitude, float accuracy) {
         JSONObject response = new JSONObject();
 
         Connection conn = null;
@@ -47,8 +47,8 @@ public class TrackerDbHelper {
 
         ds = getDataSource();
 
-        String sql = "INSERT INTO Points (idRoute, lat, lng, altitude) " +
-                     "VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Points (idRoute, lat, lng, altitude, accuracy) " +
+                     "VALUES (?,?,?,?,?)";
 
         try {
             conn = ds.getConnection();
@@ -57,6 +57,7 @@ public class TrackerDbHelper {
             stmt.setFloat(2, lat);
             stmt.setFloat(3, lng);
             stmt.setFloat(4, altitude);
+            stmt.setFloat(5, accuracy);
 
             int res = stmt.executeUpdate();
 

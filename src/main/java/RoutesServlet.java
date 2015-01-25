@@ -24,6 +24,7 @@ public class RoutesServlet extends HttpServlet {
         String dateFormatString = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
 
+        String paramInsertRouteAll = request.getParameter("insertRouteAll");
         String paramIdUser = request.getParameter("idUser");
         String paramName = request.getParameter("name");
         String paramDistance= request.getParameter("distance");
@@ -31,12 +32,135 @@ public class RoutesServlet extends HttpServlet {
         String paramStartTime= request.getParameter("startTime");
         String paramEndTime = request.getParameter("endTime");
 
+        String paramUpdateRoute = request.getParameter("updateRoute");
+        String paramIdRoute = request.getParameter("idRoute");
+
+        String paramIdFacebook = request.getParameter("idFacebook");
+        String paramInsertNewRoute = request.getParameter("insertNewRoute");
+
+        if(paramInsertRouteAll != null && paramInsertRouteAll.length() > 0) {
+            JSONObject responseJSON = insertNewRouteWithAllParameters(paramIdUser, paramName, paramDistance, paramAvgSpeed,
+                    paramStartTime, paramEndTime, dateFormatString, dateFormat);
+            out.println(responseJSON);
+        } else if(paramInsertNewRoute != null && paramInsertNewRoute.length() > 0
+                && paramIdFacebook != null && paramIdFacebook.length() > 0) {
+            JSONObject responseObject = dbUtils.insertRoute(paramIdFacebook);
+            out.println(responseObject);
+        }  else if(paramUpdateRoute != null && paramUpdateRoute.length() > 0) {
+            JSONObject responseObject = updateRoute(paramIdRoute, paramName, paramDistance, paramAvgSpeed,
+                    paramStartTime, paramEndTime, dateFormatString, dateFormat);
+            out.println(responseObject);
+        } else {
+            JSONObject responseJSON = new JSONObject();
+            responseJSON.put("error", true);
+            responseJSON.put("errorCode", 0);
+            responseJSON.put("errorDescription", "Not enough data");
+            out.println(responseJSON);
+        }
+
+
+
+        out.flush();
+        out.close();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    private JSONObject updateRoute(String paramIdRoute, String paramName, String paramDistance, String paramAvgSpeed,
+                             String paramStartTime, String paramEndTime,
+                             String dateFormatString, SimpleDateFormat dateFormat) {
+
+        JSONObject responseJSON = new JSONObject();
+        RoutesDbHelper dbUtils = new RoutesDbHelper();
+        int idRoute = 0;
+
+        if(paramIdRoute == null || !Utils.isInteger(paramIdRoute)) {
+            responseJSON.put("error", true);
+            responseJSON.put("errorCode", 0);
+            responseJSON.put("errorDescription", "idRoute parameter missing!");
+            return responseJSON;
+        } else {
+            idRoute = Integer.parseInt(paramIdRoute);
+        }
+
+        boolean parametersSuitable = true;
+        String failedData = "";
+        String name = "";
+        float distance = 0;
+        float avgSpeed = 0;
+        Date startTime = null;
+        Date endTime = null;
+
+        if(paramName != null && paramName.length() > 0) {
+            name = paramName;
+        } else {
+            parametersSuitable = false;
+            failedData += "name (input:" + paramName + ") ";
+        }
+
+        if(paramDistance != null && Utils.isFloat(paramDistance)) {
+            distance = Float.parseFloat(paramDistance);
+        } else {
+            parametersSuitable = false;
+            failedData += "distance (input:" + paramDistance + ") ";
+        }
+
+        if(paramAvgSpeed != null && Utils.isFloat(paramAvgSpeed)) {
+            avgSpeed = Float.parseFloat(paramAvgSpeed);
+        } else {
+            parametersSuitable = false;
+            failedData += "averageSpeed (input:" + paramAvgSpeed + ") ";
+        }
+
+        try {
+            if (paramStartTime != null && (paramStartTime.length() == dateFormatString.length())) {
+                startTime = new java.sql.Date(dateFormat.parse(paramStartTime).getTime());
+            } else {
+                parametersSuitable = false;
+                failedData += "startTime (input:" + paramStartTime + ") ";
+            }
+
+            if (paramEndTime != null && (paramEndTime.length() == dateFormatString.length())) {
+                endTime = new java.sql.Date(dateFormat.parse(paramEndTime).getTime());
+            } else {
+                parametersSuitable = false;
+                failedData += "endTime (input:" + paramEndTime + ") ";
+            }
+        } catch (ParseException pex) {
+            responseJSON.put("error", true);
+            responseJSON.put("errorCode", 1);
+            responseJSON.put("errorDescription", "Date parse exception: " + pex.getMessage());
+        }
+
+
+        if(parametersSuitable) {
+            responseJSON = dbUtils.updateRoute(idRoute, name, distance, avgSpeed, startTime, endTime);
+        } else {
+            responseJSON.put("error", true);
+            responseJSON.put("errorCode", 0);
+            responseJSON.put("errorDescription", "Not suitable data");
+            responseJSON.put("errorDataFields", failedData);
+        }
+
+        return responseJSON;
+    }
+
+    private JSONObject insertNewRouteWithAllParameters(String paramIdUser, String paramName, String paramDistance,
+                                                 String paramAvgSpeed, String paramStartTime, String paramEndTime,
+                                                 String dateFormatString, SimpleDateFormat dateFormat) {
+
+        JSONObject responseJSON = new JSONObject();
+
         int idUser = 0;
         String name = "";
         float distance = 0;
         float avgSpeed = 0;
         Date startTime = null;
         Date endTime = null;
+
+        RoutesDbHelper dbUtils = new RoutesDbHelper();
 
         boolean parametersSuitable = true;
         String failedData = "";
@@ -84,31 +208,21 @@ public class RoutesServlet extends HttpServlet {
                 failedData += "endTime (input:" + paramEndTime + ") ";
             }
         } catch (ParseException pex) {
-            JSONObject responseJSON = new JSONObject();
             responseJSON.put("error", true);
             responseJSON.put("errorCode", 1);
             responseJSON.put("errorDescription", "Date parse exception: " + pex.getMessage());
-            out.println(responseJSON);
         }
 
 
         if(parametersSuitable) {
-            JSONObject responseObject = dbUtils.insertRoute(idUser, name, distance, avgSpeed, startTime, endTime);
-            out.println(responseObject);
+            responseJSON = dbUtils.insertRoute(idUser, name, distance, avgSpeed, startTime, endTime);;
         } else {
-            JSONObject responseJSON = new JSONObject();
             responseJSON.put("error", true);
             responseJSON.put("errorCode", 0);
             responseJSON.put("errorDescription", "Not suitable data");
             responseJSON.put("errorDataFields", failedData);
-            out.println(responseJSON);
         }
 
-        out.flush();
-        out.close();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        return responseJSON;
     }
 }

@@ -6,10 +6,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class UsersDbHelper {
@@ -143,6 +140,55 @@ public class UsersDbHelper {
         return res;
     }
 
+    public int getUserId(String idFacebook) {
+        int result = -1;
+        String error = "";
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        String sql = "SELECT idUser " +
+                     "FROM Users " +
+                     "WHERE idFacebook = ?";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, idFacebook);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if(resultSet.next()) {
+                result = resultSet.getInt("idUser");
+            }
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+                se.printStackTrace();
+            }
+        }
+
+        return  result;
+    }
+
     public JSONObject insertUser(String username, String email, String pass, String authType) {
         JSONObject response = new JSONObject();
 
@@ -246,6 +292,92 @@ public class UsersDbHelper {
         return response;
     }
 
+    public JSONObject insertFacebookUser(String idFacebook, String username, String birthday) {
+        JSONObject response = new JSONObject();
+
+        // Check username
+        ResultObject resUserNameExists = userNameExists(username);
+        if(resUserNameExists.getError().length() == 0) {
+            // Username already taken
+            if(resUserNameExists.isResultSuccessful()) {
+                response.put("error", true);
+                response.put("errorCode", 1);
+                response.put("errorDescription", "Username is already taken");
+                return response;
+            }
+        } else {
+            // Error recieving usernames
+            response.put("error", true);
+            response.put("errorCode", 3);
+            response.put("errorDescription", resUserNameExists.getError());
+            return response;
+        }
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        String sql = "INSERT INTO Users (idFacebook, userName, birthday) " +
+                     "VALUES (?,?,?)";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, idFacebook);
+            stmt.setString(2, username);
+            if(birthday != null && !birthday.equals("null")) {
+                stmt.setDate(3, new java.sql.Date(new java.util.Date(birthday).getTime()));
+            } else {
+                stmt.setNull(3, Types.DATE);
+            }
+            int res = stmt.executeUpdate();
+
+            if(res > 0) {
+                response.put("success", true);
+            } else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Insert failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
+
     public JSONObject loginUser(String email, String pass) {
         JSONObject response = new JSONObject();
 
@@ -275,8 +407,8 @@ public class UsersDbHelper {
         String passwordFromDatabase = "";
 
         String sql = "SELECT password " +
-                "FROM Users " +
-                "WHERE email = ?";
+                     "FROM Users " +
+                     "WHERE email = ?";
 
         try {
             conn = ds.getConnection();

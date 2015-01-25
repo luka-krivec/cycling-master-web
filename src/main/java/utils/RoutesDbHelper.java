@@ -108,4 +108,170 @@ public class RoutesDbHelper {
 
         return response;
     }
+
+    public JSONObject insertRoute(String idFacebook) {
+        JSONObject response = new JSONObject();
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        UsersDbHelper usersHelper = new UsersDbHelper();
+        int idUser = usersHelper.getUserId(idFacebook);
+
+        ds = getDataSource();
+
+        String sql = "INSERT INTO Routes (idUser) " +
+                     "VALUES (?)";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idUser);
+
+            int res = stmt.executeUpdate();
+
+            if(res > 0) {
+                response.put("success", true);
+            } else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Insert failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
+
+    public JSONObject updateRoute(int idRoute, String name, float distance, float avgSpeed,
+                                  Date startTime, Date endTime) {
+        JSONObject response = new JSONObject();
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        boolean hasName = name != null && name.length() > 0;
+        boolean hasDistance = distance > 0;
+        boolean hasAvgSpeed = avgSpeed > 0;
+        boolean hasStartTime = startTime != null;
+        boolean hasEndTime = endTime != null;
+
+        String sql =    "UPDATE routes " +
+                        "SET " + (hasName ? "routeName = ?," : " ")
+                        + (hasDistance ? "distance = ?,"  : " ")
+                        + (hasAvgSpeed ? "averageSpeed = ?," : " ")
+                        + (hasStartTime ? "startTime = ?," : " ")
+                        + (hasEndTime ? "endTime = ?," : " ");
+
+        sql = sql.substring(0, sql.length()-1); // trim last semicolon
+        sql += " WHERE idRoute = ?";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+
+            int currentIndex = 1;
+
+            if(hasName) {
+                stmt.setString(currentIndex++, name);
+            }
+
+            if(hasDistance) {
+                stmt.setFloat(currentIndex++, distance);
+            }
+
+            if(hasAvgSpeed) {
+                stmt.setFloat(currentIndex++, avgSpeed);
+            }
+
+            if(hasStartTime) {
+                stmt.setDate(currentIndex++, startTime);
+            }
+
+            if(hasEndTime) {
+                stmt.setDate(currentIndex++, endTime);
+            }
+
+            stmt.setInt(currentIndex, idRoute);
+
+            int res = stmt.executeUpdate();
+
+            if(res > 0) {
+                response.put("success", true);
+            } else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Insert failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
 }

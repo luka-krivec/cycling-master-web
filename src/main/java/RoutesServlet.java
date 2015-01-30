@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -74,7 +75,7 @@ public class RoutesServlet extends HttpServlet {
 
         JSONObject responseJSON = new JSONObject();
         RoutesDbHelper dbUtils = new RoutesDbHelper();
-        int idRoute = 0;
+        int idRoute;
 
         if(paramIdRoute == null || !Utils.isInteger(paramIdRoute)) {
             responseJSON.put("error", true);
@@ -85,48 +86,31 @@ public class RoutesServlet extends HttpServlet {
             idRoute = Integer.parseInt(paramIdRoute);
         }
 
-        boolean parametersSuitable = true;
-        String failedData = "";
         String name = "";
         float distance = 0;
         float avgSpeed = 0;
-        Date startTime = null;
-        Date endTime = null;
+        Timestamp startTime = null;
+        Timestamp endTime = null;
 
         if(paramName != null && paramName.length() > 0) {
             name = paramName;
-        } else {
-            parametersSuitable = false;
-            failedData += "name (input:" + paramName + ") ";
         }
 
         if(paramDistance != null && Utils.isFloat(paramDistance)) {
             distance = Float.parseFloat(paramDistance);
-        } else {
-            parametersSuitable = false;
-            failedData += "distance (input:" + paramDistance + ") ";
         }
 
         if(paramAvgSpeed != null && Utils.isFloat(paramAvgSpeed)) {
             avgSpeed = Float.parseFloat(paramAvgSpeed);
-        } else {
-            parametersSuitable = false;
-            failedData += "averageSpeed (input:" + paramAvgSpeed + ") ";
         }
 
         try {
             if (paramStartTime != null && (paramStartTime.length() == dateFormatString.length())) {
-                startTime = new java.sql.Date(dateFormat.parse(paramStartTime).getTime());
-            } else {
-                parametersSuitable = false;
-                failedData += "startTime (input:" + paramStartTime + ") ";
+                startTime = new java.sql.Timestamp(dateFormat.parse(paramStartTime).getTime());
             }
 
             if (paramEndTime != null && (paramEndTime.length() == dateFormatString.length())) {
-                endTime = new java.sql.Date(dateFormat.parse(paramEndTime).getTime());
-            } else {
-                parametersSuitable = false;
-                failedData += "endTime (input:" + paramEndTime + ") ";
+                endTime = new java.sql.Timestamp(dateFormat.parse(paramEndTime).getTime());
             }
         } catch (ParseException pex) {
             responseJSON.put("error", true);
@@ -134,15 +118,8 @@ public class RoutesServlet extends HttpServlet {
             responseJSON.put("errorDescription", "Date parse exception: " + pex.getMessage());
         }
 
-
-        if(parametersSuitable) {
-            responseJSON = dbUtils.updateRoute(idRoute, name, distance, avgSpeed, startTime, endTime);
-        } else {
-            responseJSON.put("error", true);
-            responseJSON.put("errorCode", 0);
-            responseJSON.put("errorDescription", "Not suitable data");
-            responseJSON.put("errorDataFields", failedData);
-        }
+        // Update route
+        responseJSON = dbUtils.updateRoute(idRoute, name, distance, avgSpeed, startTime, endTime);
 
         return responseJSON;
     }

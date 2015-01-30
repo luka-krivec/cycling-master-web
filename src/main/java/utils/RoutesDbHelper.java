@@ -6,10 +6,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 
 /**
  * Created by Luka on 16.1.2015.
@@ -132,6 +129,16 @@ public class RoutesDbHelper {
 
             if(res > 0) {
                 response.put("success", true);
+
+                // Get ID of inserted record
+                ResultSet resKeys = stmt.getGeneratedKeys();
+                if (resKeys.next()) {
+                    response.put("idRoute", resKeys.getLong(1));
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+
             } else {
                 response.put("error", true);
                 response.put("errorCode", 3);
@@ -176,7 +183,7 @@ public class RoutesDbHelper {
     }
 
     public JSONObject updateRoute(int idRoute, String name, float distance, float avgSpeed,
-                                  Date startTime, Date endTime) {
+                                  Timestamp startTime, Timestamp endTime) {
         JSONObject response = new JSONObject();
 
         Connection conn = null;
@@ -190,7 +197,7 @@ public class RoutesDbHelper {
         boolean hasStartTime = startTime != null;
         boolean hasEndTime = endTime != null;
 
-        String sql =    "UPDATE routes " +
+        String sql =    "UPDATE Routes " +
                         "SET " + (hasName ? "routeName = ?," : " ")
                         + (hasDistance ? "distance = ?,"  : " ")
                         + (hasAvgSpeed ? "averageSpeed = ?," : " ")
@@ -219,11 +226,11 @@ public class RoutesDbHelper {
             }
 
             if(hasStartTime) {
-                stmt.setDate(currentIndex++, startTime);
+                stmt.setTimestamp(currentIndex++, startTime);
             }
 
             if(hasEndTime) {
-                stmt.setDate(currentIndex++, endTime);
+                stmt.setTimestamp(currentIndex++, endTime);
             }
 
             stmt.setInt(currentIndex, idRoute);

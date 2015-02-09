@@ -39,6 +39,75 @@ public class TrackerDbHelper {
         return ds;
     }
 
+    /**
+     * Delete all route points.
+     * @param idRoute
+     * @return
+     */
+    public JSONObject deletePoints(int idRoute) {
+        JSONObject response = new JSONObject();
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        String sql = "DELETE FROM Points " +
+                     "WHERE idRoute = ?";
+
+        try {
+            conn = ds.getConnection();
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idRoute);
+
+            int res = stmt.executeUpdate();
+
+            if(res > 0) {
+                response.put("success", true);
+            } else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Delete failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
+
 
     public JSONObject insertPoint(int id_route, float lat, float lng, boolean hasAltitude, float altitude,
                                   boolean hasAccuracy, float accuracy, boolean hasSpeed,  float speed,

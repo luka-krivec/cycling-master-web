@@ -39,6 +39,10 @@ public class RoutesServlet extends HttpServlet {
         String paramIdFacebook = request.getParameter("idFacebook");
         String paramInsertNewRoute = request.getParameter("insertNewRoute");
 
+        String paramGetLastRoute = request.getParameter("getLastRoute");
+
+        String paramDeleteRoute = request.getParameter("deleteRoute");
+
         if(paramInsertRouteAll != null && paramInsertRouteAll.length() > 0) {
             JSONObject responseJSON = insertNewRouteWithAllParameters(paramIdUser, paramName, paramDistance, paramAvgSpeed,
                     paramStartTime, paramEndTime, dateFormatString, dateFormat);
@@ -50,6 +54,12 @@ public class RoutesServlet extends HttpServlet {
         }  else if(paramUpdateRoute != null && paramUpdateRoute.length() > 0) {
             JSONObject responseObject = updateRoute(paramIdRoute, paramName, paramDistance, paramAvgSpeed,
                     paramStartTime, paramEndTime, dateFormatString, dateFormat);
+            out.println(responseObject);
+        } else if(paramDeleteRoute != null && paramDeleteRoute.length() > 0) {
+            JSONObject responseObject = dbUtils.deleteRoute(Integer.parseInt(paramIdRoute));
+            out.println(responseObject);
+        } else if(paramGetLastRoute != null && paramGetLastRoute.length() > 0 && paramIdFacebook != null && paramIdFacebook.length() > 0) {
+            JSONObject responseObject = dbUtils.getLastRoute(paramIdFacebook);
             out.println(responseObject);
         } else {
             JSONObject responseJSON = new JSONObject();

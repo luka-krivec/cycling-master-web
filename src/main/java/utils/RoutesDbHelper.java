@@ -1,12 +1,19 @@
 package utils;
 
-import org.json.simple.JSONObject;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.*;
+
+import org.json.simple.JSONObject;
 
 /**
  * Created by Luka on 16.1.2015.
@@ -18,7 +25,7 @@ public class RoutesDbHelper {
     private DataSource ds;
 
     public DataSource getDataSource() {
-        if(this.ds != null) {
+        if (this.ds != null) {
             return ds;
         }
 
@@ -38,7 +45,8 @@ public class RoutesDbHelper {
         return ds;
     }
 
-    public JSONObject insertRoute(int id_user, String name, float distance, float average_speed, Date start_time, Date end_time) {
+    public JSONObject insertRoute(int id_user, String name, float distance, float average_speed, Date start_time,
+            Date end_time) {
         JSONObject response = new JSONObject();
 
         Connection conn = null;
@@ -47,7 +55,7 @@ public class RoutesDbHelper {
         ds = getDataSource();
 
         String sql = "INSERT INTO Routes (idUser, routeName, distance, averageSpeed, startTime, endTime) " +
-                     "VALUES (?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?)";
 
         try {
             conn = ds.getConnection();
@@ -61,7 +69,7 @@ public class RoutesDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -94,8 +102,9 @@ public class RoutesDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -118,7 +127,7 @@ public class RoutesDbHelper {
         ds = getDataSource();
 
         String sql = "INSERT INTO Routes (idUser) " +
-                     "VALUES (?)";
+                "VALUES (?)";
 
         try {
             conn = ds.getConnection();
@@ -127,15 +136,14 @@ public class RoutesDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
 
                 // Get ID of inserted record
                 ResultSet resKeys = stmt.getGeneratedKeys();
                 if (resKeys.next()) {
                     response.put("idRoute", resKeys.getLong(1));
-                }
-                else {
+                } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
 
@@ -170,8 +178,9 @@ public class RoutesDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -184,6 +193,7 @@ public class RoutesDbHelper {
 
     /**
      * Delete route and all points logged.
+     *
      * @param idRoute
      * @return
      */
@@ -196,7 +206,7 @@ public class RoutesDbHelper {
         ds = getDataSource();
 
         String sql = "DELETE FROM Routes " +
-                     "WHERE idRoute = ?";
+                "WHERE idRoute = ?";
 
         try {
             conn = ds.getConnection();
@@ -206,14 +216,16 @@ public class RoutesDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
 
                 TrackerDbHelper trackerUtils = new TrackerDbHelper();
                 JSONObject resDeletePoints = trackerUtils.deletePoints(idRoute);
                 response.put("deletePoints", resDeletePoints.get("success") != null ? "success" : "not success");
                 response.put("deletePointsError",
-                        resDeletePoints.get("errorDescription") != null ? resDeletePoints.get("errorDescription") : "no error");
+                        resDeletePoints.get("errorDescription") != null
+                                ? resDeletePoints.get("errorDescription")
+                                : "no error");
             } else {
                 response.put("error", true);
                 response.put("errorCode", 3);
@@ -245,8 +257,9 @@ public class RoutesDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -258,7 +271,7 @@ public class RoutesDbHelper {
     }
 
     public JSONObject updateRoute(int idRoute, String name, float distance, float avgSpeed,
-                                  Timestamp startTime, Timestamp endTime) {
+            Timestamp startTime, Timestamp endTime) {
         JSONObject response = new JSONObject();
 
         Connection conn = null;
@@ -272,14 +285,14 @@ public class RoutesDbHelper {
         boolean hasStartTime = startTime != null;
         boolean hasEndTime = endTime != null;
 
-        String sql =    "UPDATE Routes " +
-                        "SET " + (hasName ? "routeName = ?," : " ")
-                        + (hasDistance ? "distance = ?,"  : " ")
-                        + (hasAvgSpeed ? "averageSpeed = ?," : " ")
-                        + (hasStartTime ? "startTime = ?," : " ")
-                        + (hasEndTime ? "endTime = ?," : " ");
+        String sql = "UPDATE Routes " +
+                "SET " + (hasName ? "routeName = ?," : " ")
+                + (hasDistance ? "distance = ?," : " ")
+                + (hasAvgSpeed ? "averageSpeed = ?," : " ")
+                + (hasStartTime ? "startTime = ?," : " ")
+                + (hasEndTime ? "endTime = ?," : " ");
 
-        sql = sql.substring(0, sql.length()-1); // trim last semicolon
+        sql = sql.substring(0, sql.length() - 1); // trim last semicolon
         sql += " WHERE idRoute = ?";
 
         try {
@@ -288,23 +301,23 @@ public class RoutesDbHelper {
 
             int currentIndex = 1;
 
-            if(hasName) {
+            if (hasName) {
                 stmt.setString(currentIndex++, name);
             }
 
-            if(hasDistance) {
+            if (hasDistance) {
                 stmt.setFloat(currentIndex++, distance);
             }
 
-            if(hasAvgSpeed) {
+            if (hasAvgSpeed) {
                 stmt.setFloat(currentIndex++, avgSpeed);
             }
 
-            if(hasStartTime) {
+            if (hasStartTime) {
                 stmt.setTimestamp(currentIndex++, startTime);
             }
 
-            if(hasEndTime) {
+            if (hasEndTime) {
                 stmt.setTimestamp(currentIndex++, endTime);
             }
 
@@ -312,7 +325,7 @@ public class RoutesDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -345,8 +358,9 @@ public class RoutesDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -357,9 +371,9 @@ public class RoutesDbHelper {
         return response;
     }
 
-
     /**
      * Delete route and all points logged.
+     *
      * @param idFacebook ID of user on Facebook
      * @return
      */
@@ -373,9 +387,9 @@ public class RoutesDbHelper {
 
         String sql =
                 "SELECT * \n" +
-                "FROM Routes\n" +
-                "WHERE idUser = (SELECT idUser FROM Users WHERE idFacebook=?) AND routeName IS NOT NULL \n" +
-                "ORDER BY dateCreated DESC LIMIT 1";
+                        "FROM Routes\n" +
+                        "WHERE idUser = (SELECT idUser FROM Users WHERE idFacebook=?) AND routeName IS NOT NULL \n" +
+                        "ORDER BY dateCreated DESC LIMIT 1";
 
         try {
             conn = ds.getConnection();
@@ -386,54 +400,41 @@ public class RoutesDbHelper {
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 response.put("success", true);
 
                 int numColumns = rsmd.getColumnCount();
 
-                for (int i=1; i<numColumns+1; i++) {
+                for (int i = 1; i < numColumns + 1; i++) {
                     String column_name = rsmd.getColumnName(i);
 
-                    if(rsmd.getColumnType(i)==java.sql.Types.ARRAY){
+                    if (rsmd.getColumnType(i) == java.sql.Types.ARRAY) {
                         response.put(column_name, rs.getArray(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.BIGINT){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.BIGINT) {
                         response.put(column_name, rs.getInt(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.BOOLEAN){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.BOOLEAN) {
                         response.put(column_name, rs.getBoolean(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.BLOB){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.BLOB) {
                         response.put(column_name, rs.getBlob(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.DOUBLE){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.DOUBLE) {
                         response.put(column_name, rs.getDouble(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.FLOAT){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.FLOAT) {
                         response.put(column_name, rs.getFloat(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.INTEGER){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.INTEGER) {
                         response.put(column_name, rs.getInt(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.NVARCHAR){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.NVARCHAR) {
                         response.put(column_name, rs.getNString(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.VARCHAR){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR) {
                         response.put(column_name, rs.getString(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.TINYINT){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.TINYINT) {
                         response.put(column_name, rs.getInt(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.SMALLINT){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.SMALLINT) {
                         response.put(column_name, rs.getInt(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.DATE){
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.DATE) {
                         response.put(column_name, rs.getDate(column_name));
-                    }
-                    else if(rsmd.getColumnType(i)==java.sql.Types.TIMESTAMP){
-                        response.put(column_name, "\"" + rs.getTimestamp(column_name) + "\"" );
-                    }
-                    else {
+                    } else if (rsmd.getColumnType(i) == java.sql.Types.TIMESTAMP) {
+                        response.put(column_name, "\"" + rs.getTimestamp(column_name) + "\"");
+                    } else {
                         response.put(column_name, rs.getObject(column_name));
                     }
                 }
@@ -469,8 +470,9 @@ public class RoutesDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 

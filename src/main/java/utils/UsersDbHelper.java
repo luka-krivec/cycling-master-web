@@ -1,13 +1,17 @@
 package utils;
 
-import org.json.simple.JSONObject;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.*;
 
+import org.json.simple.JSONObject;
 
 public class UsersDbHelper {
 
@@ -16,7 +20,7 @@ public class UsersDbHelper {
     private DataSource ds;
 
     public DataSource getDataSource() {
-        if(this.ds != null) {
+        if (this.ds != null) {
             return ds;
         }
 
@@ -56,7 +60,7 @@ public class UsersDbHelper {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 result = true;
             }
         } catch (SQLException se) {
@@ -74,8 +78,9 @@ public class UsersDbHelper {
                 error = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 error = se.getMessage();
                 se.printStackTrace();
@@ -108,7 +113,7 @@ public class UsersDbHelper {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 result = true;
             }
         } catch (SQLException se) {
@@ -126,8 +131,9 @@ public class UsersDbHelper {
                 error = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 error = se.getMessage();
                 se.printStackTrace();
@@ -150,8 +156,8 @@ public class UsersDbHelper {
         ds = getDataSource();
 
         String sql = "SELECT idUser " +
-                     "FROM Users " +
-                     "WHERE idFacebook = ?";
+                "FROM Users " +
+                "WHERE idFacebook = ?";
 
         try {
             conn = ds.getConnection();
@@ -160,7 +166,7 @@ public class UsersDbHelper {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 result = resultSet.getInt("idUser");
             }
         } catch (SQLException se) {
@@ -178,15 +184,16 @@ public class UsersDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
                 se.printStackTrace();
             }
         }
 
-        return  result;
+        return result;
     }
 
     public JSONObject insertUser(String username, String email, String pass, String authType) {
@@ -194,9 +201,9 @@ public class UsersDbHelper {
 
         // Check username
         ResultObject resUserNameExists = userNameExists(username);
-        if(resUserNameExists.getError().length() == 0) {
+        if (resUserNameExists.getError().length() == 0) {
             // Username already taken
-            if(resUserNameExists.isResultSuccessful()) {
+            if (resUserNameExists.isResultSuccessful()) {
                 response.put("error", true);
                 response.put("errorCode", 1);
                 response.put("errorDescription", "Username is already taken");
@@ -210,12 +217,11 @@ public class UsersDbHelper {
             return response;
         }
 
-
         // Check email
         ResultObject resEmailExists = userExists(email);
-        if(resEmailExists.getError().length() == 0) {
+        if (resEmailExists.getError().length() == 0) {
             // Email already registered
-            if(resEmailExists.isResultSuccessful()) {
+            if (resEmailExists.isResultSuccessful()) {
                 response.put("error", true);
                 response.put("errorCode", 2);
                 response.put("errorDescription", "Email already registered.");
@@ -235,7 +241,7 @@ public class UsersDbHelper {
         ds = getDataSource();
 
         String sql = "INSERT INTO Users (email, password, userName, authType) " +
-                     "VALUES (?,?,?,?)";
+                "VALUES (?,?,?,?)";
 
         try {
             conn = ds.getConnection();
@@ -247,7 +253,7 @@ public class UsersDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -280,8 +286,9 @@ public class UsersDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -297,9 +304,9 @@ public class UsersDbHelper {
 
         // Check username
         ResultObject resUserNameExists = userNameExists(username);
-        if(resUserNameExists.getError().length() == 0) {
+        if (resUserNameExists.getError().length() == 0) {
             // Username already taken
-            if(resUserNameExists.isResultSuccessful()) {
+            if (resUserNameExists.isResultSuccessful()) {
                 response.put("error", true);
                 response.put("errorCode", 1);
                 response.put("errorDescription", "Username is already taken");
@@ -319,21 +326,21 @@ public class UsersDbHelper {
         ds = getDataSource();
 
         String sql = "INSERT INTO Users (idFacebook, userName, birthday) " +
-                     "VALUES (?,?,?)";
+                "VALUES (?,?,?)";
 
         try {
             conn = ds.getConnection();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, idFacebook);
             stmt.setString(2, username);
-            if(birthday != null && !birthday.equals("null")) {
+            if (birthday != null && !birthday.equals("null")) {
                 stmt.setDate(3, new java.sql.Date(new java.util.Date(birthday).getTime()));
             } else {
                 stmt.setNull(3, Types.DATE);
             }
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -366,8 +373,9 @@ public class UsersDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 
@@ -383,9 +391,9 @@ public class UsersDbHelper {
 
         // Check email
         ResultObject resEmailExists = userExists(email);
-        if(resEmailExists.getError().length() == 0) {
+        if (resEmailExists.getError().length() == 0) {
             // Email already registered
-            if(resEmailExists.isResultSuccessful() == false) {
+            if (resEmailExists.isResultSuccessful() == false) {
                 response.put("error", true);
                 response.put("errorCode", 1);
                 response.put("errorDescription", "User with this email not exists");
@@ -407,8 +415,8 @@ public class UsersDbHelper {
         String passwordFromDatabase = "";
 
         String sql = "SELECT password " +
-                     "FROM Users " +
-                     "WHERE email = ?";
+                "FROM Users " +
+                "WHERE email = ?";
 
         try {
             conn = ds.getConnection();
@@ -417,13 +425,13 @@ public class UsersDbHelper {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 passwordFromDatabase = resultSet.getString(1);
             }
 
             boolean validatePassword = PasswordHash.validatePassword(pass, passwordFromDatabase);
 
-            if(validatePassword) {
+            if (validatePassword) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -454,8 +462,9 @@ public class UsersDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
                 se.printStackTrace();

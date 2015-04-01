@@ -1,20 +1,22 @@
-import org.json.simple.JSONObject;
-import utils.TrackerDbHelper;
-import utils.Utils;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
+import org.json.simple.JSONObject;
 
-@WebServlet(name = "TrackerServlet", urlPatterns = {"/tracker/*"})
+import utils.TrackerDbHelper;
+import utils.Utils;
+
+@WebServlet(name = "TrackerServlet", urlPatterns = { "/tracker/*" })
 public class TrackerServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json; charset=UTF-8");
 
@@ -44,21 +46,21 @@ public class TrackerServlet extends HttpServlet {
         String failedData = "";
 
         // Required parameters
-        if(paramIdRoute != null && Utils.isInteger(paramIdRoute)) {
+        if (paramIdRoute != null && Utils.isInteger(paramIdRoute)) {
             idRoute = Integer.parseInt(paramIdRoute);
         } else {
             parametersSuitable = false;
             failedData += "idRoute (input:" + paramIdRoute + ") ";
         }
 
-        if(paramLat != null && Utils.isFloat(paramLat)) {
+        if (paramLat != null && Utils.isFloat(paramLat)) {
             lat = Float.parseFloat(paramLat);
         } else {
             parametersSuitable = false;
             failedData += "lat (input:" + paramLat + ") ";
         }
 
-        if(paramLng != null && Utils.isFloat(paramLng)) {
+        if (paramLng != null && Utils.isFloat(paramLng)) {
             lng = Float.parseFloat(paramLng);
         } else {
             parametersSuitable = false;
@@ -66,30 +68,29 @@ public class TrackerServlet extends HttpServlet {
         }
 
         // Optional parameters
-        if(paramAltitude != null && Utils.isFloat(paramAltitude)) {
+        if (paramAltitude != null && Utils.isFloat(paramAltitude)) {
             altitude = Float.parseFloat(paramAltitude);
             hasAltitude = altitude > 0;
         }
 
-        if(paramAccuracy != null && Utils.isFloat(paramAccuracy)) {
+        if (paramAccuracy != null && Utils.isFloat(paramAccuracy)) {
             accuracy = Float.parseFloat(paramAccuracy);
             hasAccuracy = accuracy > 0;
         }
 
-        if(paramSpeed != null && Utils.isFloat(paramSpeed)) {
+        if (paramSpeed != null && Utils.isFloat(paramSpeed)) {
             speed = Float.parseFloat(paramSpeed);
             hasSpeed = speed > 0;
         }
 
-        if(paramBearing != null && Utils.isFloat(paramBearing)) {
+        if (paramBearing != null && Utils.isFloat(paramBearing)) {
             bearing = Float.parseFloat(paramBearing);
             hasBearing = (bearing >= 0) && (bearing <= 360);
         }
 
-
-        if(parametersSuitable) {
+        if (parametersSuitable) {
             JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, hasAltitude, altitude,
-                    hasAccuracy, accuracy, hasSpeed, speed, hasBearing,  bearing);
+                    hasAccuracy, accuracy, hasSpeed, speed, hasBearing, bearing);
             out.println(responseObject);
         } else {
             JSONObject responseJSON = new JSONObject();
@@ -104,7 +105,8 @@ public class TrackerServlet extends HttpServlet {
         out.close();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
     }
 }

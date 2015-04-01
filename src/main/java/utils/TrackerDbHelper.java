@@ -41,6 +41,7 @@ public class TrackerDbHelper {
 
     /**
      * Delete all route points.
+     *
      * @param idRoute
      * @return
      */
@@ -53,7 +54,7 @@ public class TrackerDbHelper {
         ds = getDataSource();
 
         String sql = "DELETE FROM Points " +
-                     "WHERE idRoute = ?";
+                "WHERE idRoute = ?";
 
         try {
             conn = ds.getConnection();
@@ -63,7 +64,7 @@ public class TrackerDbHelper {
 
             int res = stmt.executeUpdate();
 
-            if(res > 0) {
+            if (res > 0) {
                 response.put("success", true);
             } else {
                 response.put("error", true);
@@ -96,8 +97,9 @@ public class TrackerDbHelper {
                 LAST_ERROR = se.getMessage();
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (SQLException se) {
                 LAST_ERROR = se.getMessage();
 

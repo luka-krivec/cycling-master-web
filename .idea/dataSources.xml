@@ -15,7 +15,7 @@
       </driver-properties>
       <libraries>
         <library>
-          <url>file://$PROJECT_DIR$/../../Libraries/mysql-connector-java-5.1.18.jar</url>
+          <url>file://$USER_HOME$/Libraries/mysql-connector-java-5.1.18.jar</url>
         </library>
       </libraries>
     </data-source>

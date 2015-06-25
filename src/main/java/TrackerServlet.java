@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import utils.MongoDBHelper;
 import utils.TrackerDbHelper;
 import utils.Utils;
 
@@ -29,6 +30,8 @@ public class TrackerServlet extends HttpServlet {
         String paramSpeed = request.getParameter("speed");
         String paramBearing = request.getParameter("bearing");
         String paramAccuracy = request.getParameter("accuracy");
+        String paramLats = request.getParameter("lats");
+        String paramLons = request.getParameter("lons");
 
         int idRoute = 0;
         float lat = 0;
@@ -37,6 +40,9 @@ public class TrackerServlet extends HttpServlet {
         float accuracy = 0;
         float speed = 0;
         float bearing = 0;
+
+        String lats = "";
+        String lons = "";
 
         boolean parametersSuitable = true;
         boolean hasAltitude = false;
@@ -53,21 +59,23 @@ public class TrackerServlet extends HttpServlet {
             failedData += "idRoute (input:" + paramIdRoute + ") ";
         }
 
+        // Optional parameters
         if (paramLat != null && Utils.isFloat(paramLat)) {
             lat = Float.parseFloat(paramLat);
-        } else {
-            parametersSuitable = false;
-            failedData += "lat (input:" + paramLat + ") ";
         }
 
         if (paramLng != null && Utils.isFloat(paramLng)) {
             lng = Float.parseFloat(paramLng);
-        } else {
-            parametersSuitable = false;
-            failedData += "lng (input:" + paramLng + ") ";
         }
 
-        // Optional parameters
+        if (paramLats != null) {
+            lats = paramLats;
+        }
+
+        if (paramLons != null) {
+            lons = paramLons;
+        }
+
         if (paramAltitude != null && Utils.isFloat(paramAltitude)) {
             altitude = Float.parseFloat(paramAltitude);
             hasAltitude = altitude > 0;
@@ -89,9 +97,14 @@ public class TrackerServlet extends HttpServlet {
         }
 
         if (parametersSuitable) {
-            JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, hasAltitude, altitude,
-                    hasAccuracy, accuracy, hasSpeed, speed, hasBearing, bearing);
-            out.println(responseObject);
+            if(paramLat != null && paramLng != null) {
+                JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, hasAltitude, altitude,
+                        hasAccuracy, accuracy, hasSpeed, speed, hasBearing, bearing);
+                out.println(responseObject);
+            } else if(paramLats != null && paramLons != null) {
+                JSONObject responseObject = dbUtils.insertPoints(idRoute, lats, lons);
+                out.println(responseObject);
+            }
         } else {
             JSONObject responseJSON = new JSONObject();
             responseJSON.put("error", true);

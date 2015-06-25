@@ -26,5 +26,8 @@
         <module name="TrackerWeb" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="TrackerWeb" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

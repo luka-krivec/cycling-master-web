@@ -1,5 +1,9 @@
 package utils;
 
+import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 
 import javax.naming.Context;
@@ -10,11 +14,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TrackerDbHelper {
 
     public static String LAST_ERROR = "";
+    public static MongoDBHelper mongoDBHelper;
 
     private DataSource ds;
 
@@ -108,6 +115,38 @@ public class TrackerDbHelper {
         }
 
         return response;
+    }
+
+    public JSONObject insertPoints(int id_route, String lats, String lons) {
+        JSONObject response = new JSONObject();
+
+        float[] lat = getFloats(lats);
+        float[] lon = getFloats(lons);
+
+        mongoDBHelper = new MongoDBHelper();
+        MongoCollection points = mongoDBHelper.getCollection("points");
+        List<Document> documents = new ArrayList<Document>();
+
+        for(int i = 0; i < lat.length; i++) {
+            Document point = new Document();
+            point.append("route_id", id_route);
+            point.append("lat", lat[i]);
+            point.append("lon", lon[i]);
+            documents.add(point);
+        }
+
+        points.insertMany(documents);
+        mongoDBHelper.destroy();
+        return response;
+    }
+
+    private float[] getFloats(String data) {
+        String[] tmp = data.split(",");
+        float[] floats = new float[tmp.length];
+        for(int i = 0; i < tmp.length; i++) {
+            floats[i] = Float.parseFloat(tmp[i]);
+        }
+        return floats;
     }
 
 

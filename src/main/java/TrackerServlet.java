@@ -32,6 +32,8 @@ public class TrackerServlet extends HttpServlet {
         String paramAccuracy = request.getParameter("accuracy");
         String paramLats = request.getParameter("lats");
         String paramLons = request.getParameter("lons");
+        String paramGetPoints = request.getParameter("getPoints");
+        String paramTimestamp = request.getParameter("timestamp");
 
         int idRoute = 0;
         float lat = 0;
@@ -40,6 +42,7 @@ public class TrackerServlet extends HttpServlet {
         float accuracy = 0;
         float speed = 0;
         float bearing = 0;
+        long timestamp = 0;
 
         String lats = "";
         String lons = "";
@@ -96,6 +99,10 @@ public class TrackerServlet extends HttpServlet {
             hasBearing = (bearing >= 0) && (bearing <= 360);
         }
 
+        if(paramTimestamp != null) {
+            timestamp = Long.parseLong(paramTimestamp);
+        }
+
         if (parametersSuitable) {
             if(paramLat != null && paramLng != null) {
                 JSONObject responseObject = dbUtils.insertPoint(idRoute, lat, lng, hasAltitude, altitude,
@@ -103,6 +110,9 @@ public class TrackerServlet extends HttpServlet {
                 out.println(responseObject);
             } else if(paramLats != null && paramLons != null) {
                 JSONObject responseObject = dbUtils.insertPoints(idRoute, lats, lons);
+                out.println(responseObject);
+            } else if(paramGetPoints != null && paramTimestamp != null) {
+                JSONObject responseObject = dbUtils.getPoints(idRoute, timestamp);
                 out.println(responseObject);
             }
         } else {

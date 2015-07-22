@@ -1,20 +1,19 @@
 package utils;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import org.json.simple.JSONObject;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -123,20 +122,59 @@ public class TrackerDbHelper {
         float[] lat = getFloats(lats);
         float[] lon = getFloats(lons);
 
-        mongoDBHelper = new MongoDBHelper();
-        MongoCollection points = mongoDBHelper.getCollection("points");
-        List<Document> documents = new ArrayList<Document>();
+        try {
+            mongoDBHelper = new MongoDBHelper();
+            DBCollection dbPoints = mongoDBHelper.getCollection("points");
+            List<DBObject> points = new ArrayList<DBObject>();
 
-        for(int i = 0; i < lat.length; i++) {
-            Document point = new Document();
-            point.append("route_id", id_route);
-            point.append("lat", lat[i]);
-            point.append("lon", lon[i]);
-            documents.add(point);
+            for(int i = 0; i < lat.length; i++) {
+                DBObject point = new BasicDBObject("route_id", id_route)
+                        .append("lat", lat[i])
+                        .append("lon", lon[i])
+                        .append("time", System.currentTimeMillis() / 1000L);
+                points.add(point);
+            }
+            dbPoints.insert(points);
+            response.put("success", true);
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            response.put("error", true);
+            response.put("errorDescription", e.getMessage());
+        } finally {
+            mongoDBHelper.destroy();
         }
 
-        points.insertMany(documents);
-        mongoDBHelper.destroy();
+        return response;
+    }
+
+    public JSONObject getPoints(int id_route, long timestamp) {
+        QueryBuilder queryBuilder = QueryBuilder.start().and(new BasicDBObject("route_id", id_route),
+                new BasicDBObject("time", new BasicDBObject("$gt", timestamp)));
+        JSONObject response = new JSONObject();
+        try {
+            mongoDBHelper = new MongoDBHelper();
+            DBCollection dbPoints = mongoDBHelper.getCollection("points");
+            DBCursor cursor = dbPoints.find(queryBuilder.get());
+            List<DBObject> points = new ArrayList<DBObject>();
+
+            try {
+                while(cursor.hasNext()) {
+                    points.add(cursor.next());
+                }
+            } finally {
+                cursor.close();
+            }
+            response.put("success", true);
+            response.put("points", points);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            response.put("error", true);
+            response.put("errorDescription", e.getMessage());
+        } finally {
+            mongoDBHelper.destroy();
+        }
+
         return response;
     }
 

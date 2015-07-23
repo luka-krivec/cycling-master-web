@@ -3,9 +3,8 @@
   <component name="dataSourceStorageLocal">
     <data-source name="MySQL Openshift CyclingMaster - @localhost" uuid="e27ac032-8ff3-43d4-9101-f5dad1903492">
       <secret-storage>master_key</secret-storage>
-      <user-name>admin7ijNKTX</user-name>
-      <schema-pattern>cyclingmaster.*</schema-pattern>
-      <default-schemas>cyclingmaster.*</default-schemas>
+      <user-name>root</user-name>
+      <schema-pattern>tracker.*</schema-pattern>
     </data-source>
   </component>
 </project>

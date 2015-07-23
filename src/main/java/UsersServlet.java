@@ -30,7 +30,8 @@ public class UsersServlet extends HttpServlet {
         String paramIdFacebook = request.getParameter("idFacebook");
         String paramBirthday = request.getParameter("birthday");
 
-        String paramGetAllUsers = request.getParameter("getAllUsers");
+        String paramSetOnline = request.getParameter("setOnline");
+        String paramIsOnline = request.getParameter("isOnline");
 
         if(paramUserSignUp != null && paramUserSignUp.equals("true")
                 && paramEmail != null && paramEmail.length() > 0
@@ -47,8 +48,11 @@ public class UsersServlet extends HttpServlet {
         } else if(paramUserFacebookSignUp != null && paramUserFacebookSignUp.equals("true")) {
             JSONObject responseJSON = dbUtils.insertFacebookUser(paramIdFacebook, paramUserName, paramBirthday);
             out.println(responseJSON);
-        } else if(paramGetAllUsers != null && paramGetAllUsers.equals("true")) {
-            JSONObject responseJSON = dbUtils.getAllUsers();
+        } else if(paramIdFacebook != null && paramSetOnline != null) {
+            JSONObject responseJSON = dbUtils.setOnline(paramIdFacebook, paramSetOnline);
+            out.println(responseJSON);
+        } else if(paramIdFacebook != null && paramIsOnline != null) {
+            JSONObject responseJSON = dbUtils.isOnline(paramIdFacebook);
             out.println(responseJSON);
         }
         else {

@@ -1,20 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source name="MySQL Openshift CyclingMaster - @localhost" uuid="e27ac032-8ff3-43d4-9101-f5dad1903492">
-    <database-info product="MySQL" version="5.5.40" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+    <database-info product="MySQL" version="5.6.17" jdbc-version="3.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.0.8 ( Revision: ${svn.Revision} )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
-    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
-    <schema name="" catalog="cyclingmaster"/>
-    <table name="Users" schema="" catalog="cyclingmaster" type="TABLE">
-      <column name="id_user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="email" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="password" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
-      <column name="username" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
-      <column name="auth_type" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
-      <column name="date_created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
-      <primary-key name="PRIMARY" columns="id_user"/>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="tracker"/>
+    <table name="friends" schema="" catalog="tracker" type="TABLE">
+      <column name="friendOne" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="friendTwo" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="status" sqlType="ENUM" precision="2" scale="0" nullable="false" jdbcType="1" def="JzAn"/>
+      <primary-key name="PRIMARY" columns="friendOne,friendTwo"/>
+      <foreign-key name="fk_Friends_Users1" columns="friendOne" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_Friends_Users2" columns="friendTwo" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="plancommentlikes" schema="" catalog="tracker" type="TABLE">
+      <column name="idPlanComment" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idPlan" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idUser,idPlan,idPlanComment"/>
+      <foreign-key name="fk_PlanCommentLikes_PlanComments1" columns="idPlanComment,idPlan,idUser" ref-table="plancomments" ref-schema="" ref-catalog="tracker" ref-columns="idPlanComment,idPlan,idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="plancomments" schema="" catalog="tracker" type="TABLE">
+      <column name="idPlanComment" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="planComment" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="idPlan" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idPlanComment,idPlan,idUser"/>
+      <foreign-key name="fk_PlanComments_Users1" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_PlanComment_Plans1" columns="idPlan" ref-table="plans" ref-schema="" ref-catalog="tracker" ref-columns="idPlan" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_PlanCommentLikes_PlanComments1" table="plancommentlikes" schema="" catalog="tracker" columns="idPlanComment,idPlan,idUser"/>
+    </table>
+    <table name="planlikes" schema="" catalog="tracker" type="TABLE">
+      <column name="idPlan" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idUser,idPlan"/>
+      <foreign-key name="fk_PlanLikes_Plans1" columns="idPlan" ref-table="plans" ref-schema="" ref-catalog="tracker" ref-columns="idPlan" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_PlanLikes_Users1" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="plans" schema="" catalog="tracker" type="TABLE">
+      <column name="idPlan" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="planText" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idPlan,idUser"/>
+      <foreign-key name="fk_Plans_Users1" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_PlanComment_Plans1" table="plancomments" schema="" catalog="tracker" columns="idPlan"/>
+      <exported-key name="fk_PlanLikes_Plans1" table="planlikes" schema="" catalog="tracker" columns="idPlan"/>
+    </table>
+    <table name="points" schema="" catalog="tracker" type="TABLE">
+      <column name="idPoint" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="lat" sqlType="FLOAT" precision="10" scale="6" nullable="false" jdbcType="7"/>
+      <column name="lng" sqlType="FLOAT" precision="10" scale="6" nullable="false" jdbcType="7"/>
+      <column name="altitude" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="accuracy" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="speed" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="bearing" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="idRoute" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idPoint,idRoute"/>
+      <foreign-key name="fk_Points_Routes1" columns="idRoute" ref-table="routes" ref-schema="" ref-catalog="tracker" ref-columns="idRoute" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="routecommentlikes" schema="" catalog="tracker" type="TABLE">
+      <column name="idRouteComment" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idRoute" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idRouteComment,idRoute,idUser"/>
+      <foreign-key name="fk_RouteCommentLikes_RouteComments1" columns="idRouteComment,idRoute,idUser" ref-table="routecomments" ref-schema="" ref-catalog="tracker" ref-columns="idRouteComment,idRoute,idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="routecomments" schema="" catalog="tracker" type="TABLE">
+      <column name="idRouteComment" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="routeComment" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="idRoute" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idRouteComment,idRoute,idUser"/>
+      <foreign-key name="fk_RouteComments_Routes1" columns="idRoute" ref-table="routes" ref-schema="" ref-catalog="tracker" ref-columns="idRoute" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_RouteComments_Users1" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_RouteCommentLikes_RouteComments1" table="routecommentlikes" schema="" catalog="tracker" columns="idRouteComment,idRoute,idUser"/>
+    </table>
+    <table name="routelikes" schema="" catalog="tracker" type="TABLE">
+      <column name="idRoute" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idUser,idRoute"/>
+      <foreign-key name="fk_RouteLikes_Routes1" columns="idRoute" ref-table="routes" ref-schema="" ref-catalog="tracker" ref-columns="idRoute" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_RouteLikes_Users1" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="routes" schema="" catalog="tracker" type="TABLE">
+      <column name="idRoute" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="routeName" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="distance" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="averageSpeed" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="startTime" sqlType="TIMESTAMP" precision="0" scale="0" nullable="true" jdbcType="93"/>
+      <column name="endTime" sqlType="TIMESTAMP" precision="0" scale="0" nullable="true" jdbcType="93"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="true" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idRoute,idUser"/>
+      <foreign-key name="fk_Routes_Users" columns="idUser" ref-table="users" ref-schema="" ref-catalog="tracker" ref-columns="idUser" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_Points_Routes1" table="points" schema="" catalog="tracker" columns="idRoute"/>
+      <exported-key name="fk_RouteComments_Routes1" table="routecomments" schema="" catalog="tracker" columns="idRoute"/>
+      <exported-key name="fk_RouteLikes_Routes1" table="routelikes" schema="" catalog="tracker" columns="idRoute"/>
+    </table>
+    <table name="users" schema="" catalog="tracker" type="TABLE">
+      <column name="idUser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="idFacebook" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="userName" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profilePicPath" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="friendsCount" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="birthday" sqlType="DATE" precision="0" scale="0" nullable="true" jdbcType="91"/>
+      <column name="dateCreated" sqlType="TIMESTAMP" precision="0" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="idUser"/>
+      <exported-key name="fk_Friends_Users1" table="friends" schema="" catalog="tracker" columns="friendOne"/>
+      <exported-key name="fk_Friends_Users2" table="friends" schema="" catalog="tracker" columns="friendTwo"/>
+      <exported-key name="fk_PlanComments_Users1" table="plancomments" schema="" catalog="tracker" columns="idUser"/>
+      <exported-key name="fk_PlanLikes_Users1" table="planlikes" schema="" catalog="tracker" columns="idUser"/>
+      <exported-key name="fk_Plans_Users1" table="plans" schema="" catalog="tracker" columns="idUser"/>
+      <exported-key name="fk_RouteComments_Users1" table="routecomments" schema="" catalog="tracker" columns="idUser"/>
+      <exported-key name="fk_RouteLikes_Users1" table="routelikes" schema="" catalog="tracker" columns="idUser"/>
+      <exported-key name="fk_Routes_Users" table="routes" schema="" catalog="tracker" columns="idUser"/>
     </table>
   </data-source>
 </component>

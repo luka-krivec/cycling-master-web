@@ -473,4 +473,136 @@ public class UsersDbHelper {
 
         return response;
     }
+
+    public JSONObject setOnline(String idFacebook, String online) {
+        JSONObject response = new JSONObject();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        String sql = "UPDATE Users " +
+                     "SET online=? " +
+                     "WHERE idFacebook=?";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(online));
+            stmt.setString(2, idFacebook);
+
+            int res = stmt.executeUpdate();
+
+            if (res > 0) {
+                response.put("success", true);
+            } else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Insert failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
+
+    public JSONObject isOnline(String idFacebook) {
+        JSONObject response = new JSONObject();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        ds = getDataSource();
+
+        String sql = "SELECT online " +
+                     "FROM Users " +
+                     "WHERE idFacebook=?";
+
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, idFacebook);
+
+            ResultSet resultSet = stmt.executeQuery();
+            int result = 0;
+
+            if (resultSet.next()) {
+                result = resultSet.getInt("online");
+                response.put("success", true);
+                response.put("online", result);
+            }  else {
+                response.put("error", true);
+                response.put("errorCode", 3);
+                response.put("errorDescription", "Select failed");
+            }
+
+        } catch (SQLException se) {
+            LAST_ERROR = se.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", se.getMessage());
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            LAST_ERROR = e.getMessage();
+
+            response.put("error", true);
+            response.put("errorCode", 4);
+            response.put("errorDescription", e.getMessage());
+
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                LAST_ERROR = se.getMessage();
+
+                se.printStackTrace();
+            }
+        }
+
+        return response;
+    }
 }

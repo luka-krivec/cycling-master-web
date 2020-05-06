@@ -5,34 +5,34 @@
          version="3.1">
     
     <servlet>
-        <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>UsersServlet</servlet-class>
+        <servlet-name>servlet.UsersServlet</servlet-name>
+        <servlet-class>servlet.UsersServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
+        <servlet-name>servlet.UsersServlet</servlet-name>
         <url-pattern>/users/*</url-pattern>
     </servlet-mapping>
 
 
     <servlet>
-        <servlet-name>TrackerServlet</servlet-name>
-        <servlet-class>TrackerServlet</servlet-class>
+        <servlet-name>servlet.TrackerServlet</servlet-name>
+        <servlet-class>servlet.TrackerServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>TrackerServlet</servlet-name>
+        <servlet-name>servlet.TrackerServlet</servlet-name>
         <url-pattern>/tracker/*</url-pattern>
     </servlet-mapping>
 
 
     <servlet>
-        <servlet-name>RoutesServlet</servlet-name>
-        <servlet-class>RoutesServlet</servlet-class>
+        <servlet-name>servlet.RoutesServlet</servlet-name>
+        <servlet-class>servlet.RoutesServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RoutesServlet</servlet-name>
+        <servlet-name>servlet.RoutesServlet</servlet-name>
         <url-pattern>/routes/*</url-pattern>
     </servlet-mapping>
 

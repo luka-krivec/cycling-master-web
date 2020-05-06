@@ -14,7 +14,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -25,11 +25,24 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 7" level="application_server_libraries" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.2" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:bson:2.13.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-annotations-api:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-jasper:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jdt:ecj:3.12.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jasper:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-servlet-api:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-juli:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-el-api:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-api:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-util-scan:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-util:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jasper-el:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jsp-api:8.5.23" level="project" />
   </component>
 </module>

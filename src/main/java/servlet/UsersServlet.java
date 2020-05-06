@@ -1,3 +1,5 @@
+package servlet;
+
 import org.json.simple.JSONObject;
 import utils.UsersDbHelper;
 

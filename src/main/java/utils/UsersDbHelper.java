@@ -32,7 +32,7 @@ public class UsersDbHelper {
 
             // Look up our data source
             ds = (DataSource)
-                    envCtx.lookup("jdbc/OpenShiftMySQL");
+                    envCtx.lookup("jdbc/DB4FreeMySQL");
         } catch (NamingException e) {
             e.printStackTrace();
         }

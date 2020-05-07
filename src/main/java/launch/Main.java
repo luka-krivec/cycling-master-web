@@ -23,6 +23,7 @@ public class Main {
         }
 
         tomcat.setPort(Integer.valueOf(webPort));
+        tomcat.getConnector();
 
         StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
         System.out.println("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());

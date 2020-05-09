@@ -110,7 +110,7 @@ public class RoutesDbHelper {
                 "VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, idUser);
 
             int res = stmt.executeUpdate();
@@ -123,7 +123,7 @@ public class RoutesDbHelper {
                 if (resKeys.next()) {
                     response.put("idRoute", resKeys.getLong(1));
                 } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    throw new SQLException("Creating route failed, no ID obtained.");
                 }
 
             } else {

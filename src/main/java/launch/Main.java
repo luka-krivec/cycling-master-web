@@ -12,6 +12,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        Class.forName("org.postgresql.Driver");
+
         String webappDirLocation = "src/main/webapp/";
         Tomcat tomcat = new Tomcat();
 

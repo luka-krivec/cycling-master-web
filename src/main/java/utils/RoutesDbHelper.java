@@ -53,7 +53,7 @@ public class RoutesDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "INSERT INTO Routes (idUser, routeName, distance, averageSpeed, startTime, endTime) " +
+        String sql = "INSERT INTO livetracker.routes (idUser, routeName, distance, averageSpeed, startTime, endTime) " +
                 "VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -106,7 +106,7 @@ public class RoutesDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "INSERT INTO Routes (idUser) " +
+        String sql = "INSERT INTO livetracker.routes (idUser) " +
                 "VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -166,7 +166,7 @@ public class RoutesDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "DELETE FROM Routes " +
+        String sql = "DELETE FROM livetracker.routes " +
                 "WHERE idRoute = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -226,7 +226,7 @@ public class RoutesDbHelper {
         boolean hasStartTime = startTime != null;
         boolean hasEndTime = endTime != null;
 
-        String sql = "UPDATE Routes " +
+        String sql = "UPDATE livetracker.routes " +
                 "SET " + (hasName ? "routeName = ?," : " ")
                 + (hasDistance ? "distance = ?," : " ")
                 + (hasAvgSpeed ? "averageSpeed = ?," : " ")
@@ -308,7 +308,7 @@ public class RoutesDbHelper {
 
         String sql =
                 "SELECT * \n" +
-                        "FROM Routes\n" +
+                        "FROM livetracker.routes\n" +
                         "WHERE idUser = (SELECT idUser FROM Users WHERE idFacebook=?) AND routeName IS NOT NULL \n" +
                         "ORDER BY dateCreated DESC LIMIT 1";
 

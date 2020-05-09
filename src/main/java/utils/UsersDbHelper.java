@@ -49,7 +49,7 @@ public class UsersDbHelper {
         //ds = getDataSource();
 
         String sql = "SELECT idUser " +
-                "FROM Users " +
+                "FROM livetracker.users " +
                 "WHERE username = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -84,7 +84,7 @@ public class UsersDbHelper {
         //ds = getDataSource();
 
         String sql = "SELECT idUser " +
-                "FROM Users " +
+                "FROM livetracker.users " +
                 "WHERE email = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -119,7 +119,7 @@ public class UsersDbHelper {
         //ds = getDataSource();
 
         String sql = "SELECT idUser " +
-                "FROM Users " +
+                "FROM livetracker.users " +
                 "WHERE idFacebook = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -185,7 +185,7 @@ public class UsersDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "INSERT INTO Users (email, password, userName, authType) " +
+        String sql = "INSERT INTO livetracker.users (email, password, userName, authType) " +
                 "VALUES (?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -251,7 +251,7 @@ public class UsersDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "INSERT INTO Users (idFacebook, userName, birthday) " +
+        String sql = "INSERT INTO livetracker.users (idFacebook, userName, birthday) " +
                 "VALUES (?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -322,7 +322,7 @@ public class UsersDbHelper {
         String passwordFromDatabase = "";
 
         String sql = "SELECT password " +
-                "FROM Users " +
+                "FROM livetracker.users " +
                 "WHERE email = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -370,7 +370,7 @@ public class UsersDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "UPDATE Users " +
+        String sql = "UPDATE livetracker.users " +
                      "SET online=? " +
                      "WHERE idFacebook=?";
 
@@ -417,7 +417,7 @@ public class UsersDbHelper {
         //ds = getDataSource();
 
         String sql = "SELECT online " +
-                     "FROM Users " +
+                     "FROM livetracker.users " +
                      "WHERE idFacebook=?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {

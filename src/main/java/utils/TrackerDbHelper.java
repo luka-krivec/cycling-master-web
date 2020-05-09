@@ -61,7 +61,7 @@ public class TrackerDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "DELETE FROM Points " +
+        String sql = "DELETE FROM livetracker.points " +
                 "WHERE idRoute = ?";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {
@@ -181,7 +181,7 @@ public class TrackerDbHelper {
 
         //ds = getDataSource();
 
-        String sql = "INSERT INTO Points (idRoute, lat, lng, altitude, accuracy, speed, bearing) " +
+        String sql = "INSERT INTO livetracker.points (idRoute, lat, lng, altitude, accuracy, speed, bearing) " +
                      "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(dbUrl)) {

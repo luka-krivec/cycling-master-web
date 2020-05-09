@@ -8,10 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +20,12 @@ public class TrackerDbHelper {
     public static MongoDBHelper mongoDBHelper;
 
     private DataSource ds;
+
+    private String dbUrl;
+
+    public TrackerDbHelper() {
+        dbUrl = System.getenv("JDBC_DATABASE_URL");
+    }
 
     public DataSource getDataSource() {
         if(this.ds != null) {
@@ -54,16 +57,14 @@ public class TrackerDbHelper {
     public JSONObject deletePoints(int idRoute) {
         JSONObject response = new JSONObject();
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "DELETE FROM Points " +
                 "WHERE idRoute = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
 
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idRoute);
@@ -94,23 +95,6 @@ public class TrackerDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -193,16 +177,14 @@ public class TrackerDbHelper {
                                   boolean hasBearing, float bearing) {
         JSONObject response = new JSONObject();
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "INSERT INTO Points (idRoute, lat, lng, altitude, accuracy, speed, bearing) " +
                      "VALUES (?,?,?,?,?,?,?)";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id_route);
             stmt.setFloat(2, lat);
@@ -258,22 +240,6 @@ public class TrackerDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;

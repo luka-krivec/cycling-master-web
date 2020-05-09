@@ -1,12 +1,6 @@
 package utils;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -23,6 +17,12 @@ public class RoutesDbHelper {
     public static String LAST_ERROR = "";
 
     private DataSource ds;
+
+    private String dbUrl;
+
+    public RoutesDbHelper() {
+        dbUrl = System.getenv("JDBC_DATABASE_URL");
+    }
 
     public DataSource getDataSource() {
         if (this.ds != null) {
@@ -49,16 +49,14 @@ public class RoutesDbHelper {
             Date end_time) {
         JSONObject response = new JSONObject();
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "INSERT INTO Routes (idUser, routeName, distance, averageSpeed, startTime, endTime) " +
                 "VALUES (?,?,?,?,?,?)";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id_user);
             stmt.setString(2, name);
@@ -93,23 +91,6 @@ public class RoutesDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -118,19 +99,17 @@ public class RoutesDbHelper {
     public JSONObject insertRoute(String idFacebook) {
         JSONObject response = new JSONObject();
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
         UsersDbHelper usersHelper = new UsersDbHelper();
         int idUser = usersHelper.getUserId(idFacebook);
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "INSERT INTO Routes (idUser) " +
                 "VALUES (?)";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idUser);
 
@@ -169,23 +148,6 @@ public class RoutesDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -200,16 +162,14 @@ public class RoutesDbHelper {
     public JSONObject deleteRoute(int idRoute) {
         JSONObject response = new JSONObject();
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "DELETE FROM Routes " +
                 "WHERE idRoute = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
 
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idRoute);
@@ -248,23 +208,6 @@ public class RoutesDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -273,11 +216,9 @@ public class RoutesDbHelper {
     public JSONObject updateRoute(int idRoute, String name, float distance, float avgSpeed,
             Timestamp startTime, Timestamp endTime) {
         JSONObject response = new JSONObject();
-
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         boolean hasName = name != null && name.length() > 0;
         boolean hasDistance = distance > 0;
@@ -295,8 +236,7 @@ public class RoutesDbHelper {
         sql = sql.substring(0, sql.length() - 1); // trim last semicolon
         sql += " WHERE idRoute = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
 
             int currentIndex = 1;
@@ -349,23 +289,6 @@ public class RoutesDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -379,11 +302,9 @@ public class RoutesDbHelper {
      */
     public JSONObject getLastRoute(String idFacebook) {
         JSONObject response = new JSONObject();
-
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql =
                 "SELECT * \n" +
@@ -391,8 +312,7 @@ public class RoutesDbHelper {
                         "WHERE idUser = (SELECT idUser FROM Users WHERE idFacebook=?) AND routeName IS NOT NULL \n" +
                         "ORDER BY dateCreated DESC LIMIT 1";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
 
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, idFacebook);
@@ -461,23 +381,6 @@ public class RoutesDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;

@@ -1,10 +1,6 @@
 package utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,8 +12,12 @@ import org.json.simple.JSONObject;
 public class UsersDbHelper {
 
     public static String LAST_ERROR = "";
-
     private DataSource ds;
+    private String dbUrl;
+
+    public UsersDbHelper() {
+        dbUrl = System.getenv("JDBC_DATABASE_URL");
+    }
 
     public DataSource getDataSource() {
         if (this.ds != null) {
@@ -44,17 +44,15 @@ public class UsersDbHelper {
         boolean result = false;
         String error = "";
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "SELECT idUser " +
                 "FROM Users " +
                 "WHERE username = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
 
@@ -69,22 +67,6 @@ public class UsersDbHelper {
         } catch (Exception e) {
             error = e.getMessage();
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                error = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                error = se.getMessage();
-                se.printStackTrace();
-            }
         }
 
         LAST_ERROR = error;
@@ -97,17 +79,15 @@ public class UsersDbHelper {
         boolean result = false;
         String error = "";
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "SELECT idUser " +
                 "FROM Users " +
                 "WHERE email = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
 
@@ -122,22 +102,6 @@ public class UsersDbHelper {
         } catch (Exception e) {
             error = e.getMessage();
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                error = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                error = se.getMessage();
-                se.printStackTrace();
-            }
         }
 
         LAST_ERROR = error;
@@ -150,17 +114,15 @@ public class UsersDbHelper {
         int result = -1;
         String error = "";
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "SELECT idUser " +
                 "FROM Users " +
                 "WHERE idFacebook = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, idFacebook);
 
@@ -175,22 +137,6 @@ public class UsersDbHelper {
         } catch (Exception e) {
             LAST_ERROR = e.getMessage();
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-                se.printStackTrace();
-            }
         }
 
         return result;
@@ -235,16 +181,14 @@ public class UsersDbHelper {
             return response;
         }
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "INSERT INTO Users (email, password, userName, authType) " +
                 "VALUES (?,?,?,?)";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             stmt.setString(2, PasswordHash.createHash(pass));
@@ -277,23 +221,6 @@ public class UsersDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -320,16 +247,14 @@ public class UsersDbHelper {
             return response;
         }
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "INSERT INTO Users (idFacebook, userName, birthday) " +
                 "VALUES (?,?,?)";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, idFacebook);
             stmt.setString(2, username);
@@ -364,23 +289,6 @@ public class UsersDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -407,10 +315,9 @@ public class UsersDbHelper {
             return response;
         }
 
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String passwordFromDatabase = "";
 
@@ -418,8 +325,7 @@ public class UsersDbHelper {
                 "FROM Users " +
                 "WHERE email = ?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
 
@@ -453,22 +359,6 @@ public class UsersDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -476,17 +366,15 @@ public class UsersDbHelper {
 
     public JSONObject setOnline(String idFacebook, String online) {
         JSONObject response = new JSONObject();
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "UPDATE Users " +
                      "SET online=? " +
                      "WHERE idFacebook=?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, Integer.parseInt(online));
             stmt.setString(2, idFacebook);
@@ -517,23 +405,6 @@ public class UsersDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;
@@ -541,17 +412,15 @@ public class UsersDbHelper {
 
     public JSONObject isOnline(String idFacebook) {
         JSONObject response = new JSONObject();
-        Connection conn = null;
         PreparedStatement stmt = null;
 
-        ds = getDataSource();
+        //ds = getDataSource();
 
         String sql = "SELECT online " +
                      "FROM Users " +
                      "WHERE idFacebook=?";
 
-        try {
-            conn = ds.getConnection();
+        try (Connection conn = DriverManager.getConnection(dbUrl)) {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, idFacebook);
 
@@ -584,23 +453,6 @@ public class UsersDbHelper {
             response.put("errorDescription", e.getMessage());
 
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                LAST_ERROR = se.getMessage();
-
-                se.printStackTrace();
-            }
         }
 
         return response;

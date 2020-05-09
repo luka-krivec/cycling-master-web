@@ -22,11 +22,10 @@
               driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://127.2.246.2:3306/tracker"/> -->
 
-    <!-- db4free.net-->
+    <!-- db4free.net
     <Resource name="jdbc/DB4FreeMySQL" auth="Container" type="javax.sql.DataSource"
               maxActive="50" maxIdle="30" maxWait="10000"
               username="trackeruser" password="LiveSportsTracker4850"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://85.10.205.173:3306/livetracker"/>
-
+              url="jdbc:mysql://85.10.205.173:3306/livetracker"/>-->
 </Context>

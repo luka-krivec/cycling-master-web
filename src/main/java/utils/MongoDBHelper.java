@@ -15,23 +15,31 @@ public class MongoDBHelper {
     private static String password = "backend4850";
     private static String database = "cyclingmaster";*/
 
-    private static final String DB_HOST = "ds045622.mlab.com";
+    /*private static final String DB_HOST = "ds045622.mlab.com";
     private static final int DB_PORT = 45622;
     private static String userName = "backend";
     private static String password = "backend4850";
-    private static String database = "heroku_wv4vtr2f";
+    private static String database = "heroku_wv4vtr2f";*/
+
+    // cloud.mongodb.com
+    private static final String DB_HOST = "cluster0.leml1.mongodb.net";
+    private static String userName = "android";
+    private static String password = "android4850";
+    private static String databaseName = "tracker";
 
     private MongoClient client;
-    private DB db;
+    private DB database;
 
     public MongoDBHelper() throws UnknownHostException {
-        MongoCredential credential = MongoCredential.createCredential(userName, database, password.toCharArray());
-        client = new MongoClient(new ServerAddress(DB_HOST, DB_PORT), Arrays.asList(credential));
-        db = client.getDB(database);
+
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb+srv://" + userName + ":" + password + "@" + DB_HOST + "/" + databaseName + "?retryWrites=true&w=majority");
+        client = new MongoClient(uri);
+        database = client.getDB(databaseName);
     }
 
     public DBCollection getCollection(String name) {
-        return db.getCollection(name);
+        return database.getCollection(name);
     }
 
     public void destroy() {
